@@ -88,7 +88,7 @@
       "description": "Experience studio-grade acoustics with hybrid active noise cancellation, custom 40mm beryllium drivers, 45-hour battery life, and plush memory foam ear cushions.",
       "price": 249.99,
       "originalPrice": 299.99,
-      "stock": 42,
+      "stock": 40,
       "categoryId": "cat-audio",
       "images": [
         "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80",
@@ -106,7 +106,7 @@
         "Charging": "USB-C Fast Charge (10m = 5h)"
       },
       "createdAt": "2026-11-22T18:32:07.214Z",
-      "updatedAt": "2026-11-22T18:32:07.214Z"
+      "updatedAt": "2026-11-22T18:51:26.679Z"
     },
     {
       "id": "prod-02",
@@ -445,7 +445,14 @@
       "updatedAt": "2026-11-22T18:32:07.262Z"
     }
   ],
-  "carts": [],
+  "carts": [
+    {
+      "id": "07738299-665e-4080-baeb-2ad1ec4e8d15",
+      "userId": "usr-admin-01",
+      "createdAt": "2026-11-22T18:52:01.706Z",
+      "updatedAt": "2026-11-22T18:52:01.706Z"
+    }
+  ],
   "cartItems": [],
   "orders": [
     {
@@ -474,6 +481,33 @@
       "carrier": "Nexora Priority Express",
       "createdAt": "2026-11-22T18:32:07.266Z",
       "updatedAt": "2026-11-22T18:32:07.266Z"
+    },
+    {
+      "id": "b66514d6-82db-4b08-94d7-190b01d0c6d2",
+      "orderNumber": "NX-288221",
+      "userId": null,
+      "customerName": "Alok Kumar Vishwas",
+      "customerEmail": "alokvishwas786@gmail.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": "GL Bajaj Campus, Knowledge Park III",
+      "city": "Greater Noida",
+      "state": "Uttar Pradesh",
+      "postalCode": "201306",
+      "country": "India",
+      "shippingMethod": "standard",
+      "paymentMethod": "DEMO_CARD",
+      "paymentStatus": "DEMO_VERIFIED",
+      "status": "CONFIRMED",
+      "subtotal": 499.98,
+      "shippingFee": 0,
+      "tax": 36,
+      "discount": 50,
+      "total": 485.98,
+      "notes": "Please verify order and leave at reception.",
+      "trackingNumber": "TRK-NEX-8280752",
+      "carrier": "Nexora Express Logistics",
+      "createdAt": "2026-11-22T18:51:26.676Z",
+      "updatedAt": "2026-11-22T18:52:36.772Z"
     }
   ],
   "orderItems": [
@@ -486,6 +520,16 @@
       "quantity": 1,
       "subtotal": 249.99,
       "createdAt": "2026-11-22T18:32:07.266Z"
+    },
+    {
+      "id": "39c8ffc6-3534-40b5-a66d-7e73d7652ded",
+      "orderId": "b66514d6-82db-4b08-94d7-190b01d0c6d2",
+      "productId": "prod-01",
+      "productName": "Nexora SoundPro ANC Wireless Headphones",
+      "productPrice": 249.99,
+      "quantity": 2,
+      "subtotal": 499.98,
+      "createdAt": "2026-11-22T18:51:26.676Z"
     }
   ]
 }
