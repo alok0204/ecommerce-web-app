@@ -1,0 +1,483 @@
+import bcrypt from 'bcryptjs';
+import db from '../src/db/prisma.js';
+
+async function seed() {
+  console.log('🌱 Starting database seeding for NEXORA E-Commerce Web App...');
+
+  // 1. Seed Categories
+  const categoriesData = [
+    {
+      id: 'cat-electronics',
+      name: 'Electronics & Gadgets',
+      slug: 'electronics',
+      description: 'Cutting-edge tech, personal computing, and productivity gadgets.',
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
+    },
+    {
+      id: 'cat-audio',
+      name: 'Audio & Wearables',
+      slug: 'audio-wearables',
+      description: 'Studio-grade acoustics, active noise cancellation, and smart health trackers.',
+      image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80',
+    },
+    {
+      id: 'cat-accessories',
+      name: 'Premium Accessories',
+      slug: 'accessories',
+      description: 'Minimalist carry, EDC gear, backpacks, and RFID-shielded essentials.',
+      image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80',
+    },
+    {
+      id: 'cat-home',
+      name: 'Smart Home & Living',
+      slug: 'home-living',
+      description: 'Ambient lighting, ergonomic workspace accessories, and smart devices.',
+      image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80',
+    },
+    {
+      id: 'cat-lifestyle',
+      name: 'Modern Lifestyle & Apparel',
+      slug: 'lifestyle-apparel',
+      description: 'Everyday elevated essentials, functional apparel, and streetwear styling.',
+      image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=600&q=80',
+    },
+  ];
+
+  for (const cat of categoriesData) {
+    const existing = await db.category.findUnique({ where: { slug: cat.slug } });
+    if (!existing) {
+      await db.category.create({ data: cat });
+      console.log(`  ✓ Added category: ${cat.name}`);
+    }
+  }
+
+  // 2. Seed Users
+  const adminPasswordHash = await bcrypt.hash('Admin@Nexora2026!', 10);
+  const userPasswordHash = await bcrypt.hash('Customer@123', 10);
+
+  const existingAdmin = await db.user.findUnique({ where: { email: 'admin@nexora.com' } });
+  if (!existingAdmin) {
+    await db.user.create({
+      data: {
+        id: 'usr-admin-01',
+        name: 'Alok Kumar Vishwas (Admin)',
+        email: 'admin@nexora.com',
+        passwordHash: adminPasswordHash,
+        role: 'ADMIN',
+        phone: '+91 98765 43210',
+        address: 'GL Bajaj ITM Campus, Knowledge Park III',
+        city: 'Greater Noida',
+        state: 'Uttar Pradesh',
+        postalCode: '201306',
+        country: 'India',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+      }
+    });
+    console.log('  ✓ Created Default Admin: admin@nexora.com');
+  }
+
+  const existingDemoUser = await db.user.findUnique({ where: { email: 'demo@customer.com' } });
+  if (!existingDemoUser) {
+    await db.user.create({
+      data: {
+        id: 'usr-customer-01',
+        name: 'Rahul Sharma',
+        email: 'demo@customer.com',
+        passwordHash: userPasswordHash,
+        role: 'USER',
+        phone: '+91 91234 56789',
+        address: 'Flat 402, Green Valley Heights',
+        city: 'New Delhi',
+        state: 'Delhi',
+        postalCode: '110001',
+        country: 'India',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
+      }
+    });
+    console.log('  ✓ Created Demo Customer: demo@customer.com');
+  }
+
+  // 3. Seed Products (14 Premium items with real images, specs, badges, and stock)
+  const productsData = [
+    {
+      id: 'prod-01',
+      name: 'Nexora SoundPro ANC Wireless Headphones',
+      slug: 'nexora-soundpro-anc-wireless-headphones',
+      description: 'Experience studio-grade acoustics with hybrid active noise cancellation, custom 40mm beryllium drivers, 45-hour battery life, and plush memory foam ear cushions.',
+      price: 249.99,
+      originalPrice: 299.99,
+      stock: 42,
+      categoryId: 'cat-audio',
+      images: [
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Best Seller',
+      rating: 4.9,
+      reviewCount: 128,
+      isFeatured: true,
+      specifications: {
+        "Bluetooth": "5.3 with Multipoint",
+        "Battery": "45 Hours (ANC ON)",
+        "Driver": "40mm Beryllium Custom",
+        "Charging": "USB-C Fast Charge (10m = 5h)"
+      }
+    },
+    {
+      id: 'prod-02',
+      name: 'AuraFit Ultra Smartwatch AMOLED',
+      slug: 'aurafit-ultra-smartwatch-amoled',
+      description: 'Aerospace-grade titanium chassis with a stunning 1.96-inch Always-On AMOLED display, 120+ workout modes, continuous ECG & SpO2 biometric sensors, and 100m water resistance.',
+      price: 179.99,
+      originalPrice: 219.99,
+      stock: 35,
+      categoryId: 'cat-audio',
+      images: [
+        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Hot Deal',
+      rating: 4.8,
+      reviewCount: 94,
+      isFeatured: true,
+      specifications: {
+        "Display": "1.96\" Retina AMOLED (1000 nits)",
+        "Water Resistance": "10 ATM / 100m",
+        "Sensors": "ECG, Optical Heart Rate, SpO2",
+        "Battery": "Up to 14 Days"
+      }
+    },
+    {
+      id: 'prod-03',
+      name: 'Vortex X1 Wireless Ergonomic Gaming Mouse',
+      slug: 'vortex-x1-wireless-ergonomic-gaming-mouse',
+      description: 'Ultra-lightweight 58g chassis, PixArt 3395 optical sensor with 26,000 DPI, optical microswitches rated for 90M clicks, and zero-latency wireless connectivity.',
+      price: 69.99,
+      originalPrice: 89.99,
+      stock: 55,
+      categoryId: 'cat-electronics',
+      images: [
+        'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Top Rated',
+      rating: 4.9,
+      reviewCount: 76,
+      isFeatured: true,
+      specifications: {
+        "Sensor": "PixArt PAW3395 (26k DPI)",
+        "Weight": "58 grams",
+        "Polling Rate": "4000Hz Wireless",
+        "Switches": "Optical 90M Clicks"
+      }
+    },
+    {
+      id: 'prod-04',
+      name: 'Lumix Mini 4K Laser Cinema Projector',
+      slug: 'lumix-mini-4k-laser-cinema-projector',
+      description: 'Transform any room into an IMAX experience with 4K UHD laser projection, 2200 ANSI Lumens, auto-keystone calibration, and integrated Dolby Atmos tuned speakers.',
+      price: 499.00,
+      originalPrice: 599.00,
+      stock: 18,
+      categoryId: 'cat-home',
+      images: [
+        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Premium',
+      rating: 4.9,
+      reviewCount: 52,
+      isFeatured: true,
+      specifications: {
+        "Resolution": "True 4K UHD (3840 x 2160)",
+        "Brightness": "2200 ANSI Lumens",
+        "Screen Size": "Up to 200 inches",
+        "Audio": "2x 15W Harman Kardon with Dolby Audio"
+      }
+    },
+    {
+      id: 'prod-05',
+      name: 'Titanium Slim RFID Blocking Minimalist Wallet',
+      slug: 'titanium-slim-rfid-blocking-minimalist-wallet',
+      description: 'Precision-machined Grade 5 titanium plates with an integrated cash strap, holding up to 12 cards with military-grade RFID scanning protection.',
+      price: 45.00,
+      originalPrice: 55.00,
+      stock: 80,
+      categoryId: 'cat-accessories',
+      images: [
+        'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Sale',
+      rating: 4.7,
+      reviewCount: 110,
+      isFeatured: false,
+      specifications: {
+        "Material": "Aerospace Grade 5 Titanium",
+        "Capacity": "1-12 Cards + Cash",
+        "Protection": "RFID/NFC Shielding",
+        "Weight": "65 grams"
+      }
+    },
+    {
+      id: 'prod-06',
+      name: 'AeroCharge 3-in-1 MagSafe Fast Charging Dock',
+      slug: 'aerocharge-3-in-1-magsafe-fast-charging-dock',
+      description: 'Simultaneously fast-charge iPhone (15W), Apple Watch Ultra, and AirPods Pro with an elegant weighted aluminum stand that complements any desk aesthetic.',
+      price: 59.99,
+      originalPrice: 79.99,
+      stock: 60,
+      categoryId: 'cat-electronics',
+      images: [
+        'https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Popular',
+      rating: 4.8,
+      reviewCount: 88,
+      isFeatured: true,
+      specifications: {
+        "Phone Output": "15W Official MagSafe Fast Charge",
+        "Watch Output": "5W Fast Magnetic",
+        "Earbuds Output": "5W Qi Wireless",
+        "Material": "Anodized Space Gray Aluminum"
+      }
+    },
+    {
+      id: 'prod-07',
+      name: 'Nordic Solid Walnut Desk Organizer & Stand',
+      slug: 'nordic-solid-walnut-desk-organizer-stand',
+      description: 'Crafted from sustainable American Walnut and matte cork base. Elevates dual monitors or laptop while offering sculpted channels for pens, cables, and phone.',
+      price: 48.00,
+      originalPrice: 65.00,
+      stock: 24,
+      categoryId: 'cat-home',
+      images: [
+        'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Handcrafted',
+      rating: 4.9,
+      reviewCount: 41,
+      isFeatured: false,
+      specifications: {
+        "Material": "Solid American Walnut + Natural Cork",
+        "Dimensions": "42cm x 18cm x 7cm",
+        "Finish": "Organic Natural Matte Oil"
+      }
+    },
+    {
+      id: 'prod-08',
+      name: 'Quantum-75 Custom Mechanical Keyboard RGB',
+      slug: 'quantum-75-custom-mechanical-keyboard-rgb',
+      description: '75% exploded layout featuring pre-lubed Gateron Oil King linear switches, hot-swappable PCB, gasket mount damping, PBT dye-sub keycaps, and CNC aluminum casing.',
+      price: 129.99,
+      originalPrice: 159.99,
+      stock: 28,
+      categoryId: 'cat-electronics',
+      images: [
+        'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Enthusiast Pick',
+      rating: 5.0,
+      reviewCount: 65,
+      isFeatured: true,
+      specifications: {
+        "Form Factor": "75% Compact (82 Keys)",
+        "Switches": "Factory Lubed Gateron Oil King",
+        "Mounting": "Poron Gasket Mount",
+        "Connectivity": "Tri-Mode (Bluetooth, 2.4Ghz, Type-C)"
+      }
+    },
+    {
+      id: 'prod-09',
+      name: 'Urban Shield Waterproof Tech Backpack 28L',
+      slug: 'urban-shield-waterproof-tech-backpack-28l',
+      description: 'Cordura 1000D ballistic nylon with YKK Aquaguard zippers, padded 16-inch laptop pocket, hidden passport compartment, and luggage pass-through strap for modern travelers.',
+      price: 89.00,
+      originalPrice: 110.00,
+      stock: 40,
+      categoryId: 'cat-accessories',
+      images: [
+        'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Best Seller',
+      rating: 4.8,
+      reviewCount: 97,
+      isFeatured: true,
+      specifications: {
+        "Capacity": "28 Liters Expandable",
+        "Laptop Sleeve": "Up to 16\" MacBook Pro / Razer Blade",
+        "Weatherproofing": "Cordura 1000D with DWR Coating",
+        "Warranty": "Lifetime Workmanship Guarantee"
+      }
+    },
+    {
+      id: 'prod-10',
+      name: 'AromaPulse Ultrasonic Diffuser & Ambient Lamp',
+      slug: 'aromapulse-ultrasonic-diffuser-ambient-lamp',
+      description: 'A ceramic-finish ultrasonic oil diffuser and warm 2700K ambient night lamp. Features 4 timer modes, whisper-quiet 20dB operation, and auto shut-off protection.',
+      price: 42.00,
+      originalPrice: 52.00,
+      stock: 50,
+      categoryId: 'cat-home',
+      images: [
+        'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Trending',
+      rating: 4.7,
+      reviewCount: 62,
+      isFeatured: false,
+      specifications: {
+        "Tank Capacity": "300ml (Up to 10 Hours)",
+        "Noise Level": "< 20 dB Ultra Silent",
+        "Lighting": "Warm Glow LED with Breathing Mode"
+      }
+    },
+    {
+      id: 'prod-11',
+      name: 'Apex Precision Polarized Aviator Sunglasses',
+      slug: 'apex-precision-polarized-aviator-sunglasses',
+      description: 'Ultra-thin Japanese beta-titanium wireframe with polarized TAC lenses providing 100% UVA/UVB protection and crystal clear optical clarity without glare.',
+      price: 65.00,
+      originalPrice: 85.00,
+      stock: 30,
+      categoryId: 'cat-accessories',
+      images: [
+        'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Summer Special',
+      rating: 4.8,
+      reviewCount: 45,
+      isFeatured: false,
+      specifications: {
+        "Frame": "Japanese Beta-Titanium",
+        "Lens": "Triacetate Polarized UV400",
+        "Weight": "18 grams Featherweight"
+      }
+    },
+    {
+      id: 'prod-12',
+      name: 'Nexora Horizon True Wireless Earbuds ANC',
+      slug: 'nexora-horizon-true-wireless-earbuds-anc',
+      description: 'Hi-Res Audio certified wireless earbuds with LDAC codec support, active noise cancelling up to 48dB, 6 ENC microphones for crystal phone calls, and wireless charging case.',
+      price: 119.99,
+      originalPrice: 139.99,
+      stock: 52,
+      categoryId: 'cat-audio',
+      images: [
+        'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Staff Pick',
+      rating: 4.9,
+      reviewCount: 104,
+      isFeatured: true,
+      specifications: {
+        "Noise Cancellation": "48dB Hybrid Active ANC",
+        "Codecs": "LDAC, AAC, SBC (Hi-Res Audio Wireless)",
+        "Total Playtime": "36 Hours with Charging Case",
+        "Water Resistance": "IPX5 Sweat & Splash Resistant"
+      }
+    },
+    {
+      id: 'prod-13',
+      name: 'SoundWave Flare Rugged IPX7 Bluetooth Speaker',
+      slug: 'soundwave-flare-rugged-ipx7-bluetooth-speaker',
+      description: '360-degree immersive punchy audio with dual passive radiators, dynamic beat-synced RGB lighting ring, 24-hour battery endurance, and completely waterproof IPX7 rating.',
+      price: 79.99,
+      originalPrice: 99.99,
+      stock: 33,
+      categoryId: 'cat-audio',
+      images: [
+        'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'Waterproof',
+      rating: 4.8,
+      reviewCount: 78,
+      isFeatured: false,
+      specifications: {
+        "Power": "30W Stereo Output",
+        "Battery": "24 Hours Continuous Playback",
+        "Waterproof": "IPX7 Submersible (1m for 30min)"
+      }
+    },
+    {
+      id: 'prod-14',
+      name: 'Monochrome Tailored Heavyweight Organic Hoodie',
+      slug: 'monochrome-tailored-heavyweight-organic-hoodie',
+      description: 'Meticulously crafted from 480 GSM French Terry organic cotton. Features double-lined hood, relaxed drop-shoulder silhouette, hidden side pockets, and ribbed cuffs.',
+      price: 74.99,
+      originalPrice: 89.99,
+      stock: 45,
+      categoryId: 'cat-lifestyle',
+      images: [
+        'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=900&q=80'
+      ],
+      badge: 'New Arrival',
+      rating: 4.9,
+      reviewCount: 39,
+      isFeatured: true,
+      specifications: {
+        "Fabric": "100% GOTS Certified Organic Cotton (480 GSM)",
+        "Fit": "Tailored Relaxed Drop-Shoulder",
+        "Origin": "Ethically Milled & Stitched"
+      }
+    }
+  ];
+
+  for (const prod of productsData) {
+    const existing = await db.product.findUnique({ where: { slug: prod.slug } });
+    if (!existing) {
+      await db.product.create({ data: prod });
+      console.log(`  ✓ Added product: ${prod.name}`);
+    }
+  }
+
+  // 4. Seed a Sample Demo Order for user
+  const existingOrders = await db.order.findMany({ where: { customerEmail: 'demo@customer.com' } });
+  if (existingOrders.length === 0) {
+    await db.order.create({
+      data: {
+        orderNumber: 'NX-894210',
+        userId: 'usr-customer-01',
+        customerName: 'Rahul Sharma',
+        customerEmail: 'demo@customer.com',
+        customerPhone: '+91 91234 56789',
+        shippingAddress: 'Flat 402, Green Valley Heights',
+        city: 'New Delhi',
+        state: 'Delhi',
+        postalCode: '110001',
+        country: 'India',
+        shippingMethod: 'standard',
+        paymentMethod: 'DEMO_CARD',
+        paymentStatus: 'DEMO_VERIFIED',
+        status: 'SHIPPED',
+        subtotal: 249.99,
+        shippingFee: 0,
+        tax: 20.00,
+        discount: 0,
+        total: 269.99,
+        notes: 'Please leave at reception if not home.',
+        trackingNumber: 'TRK-IND-994821',
+        carrier: 'Nexora Priority Express',
+        items: {
+          create: [
+            {
+              productId: 'prod-01',
+              productName: 'Nexora SoundPro ANC Wireless Headphones',
+              productPrice: 249.99,
+              quantity: 1,
+              subtotal: 249.99,
+            }
+          ]
+        }
+      }
+    });
+    console.log('  ✓ Created sample shipped order: NX-894210');
+  }
+
+  console.log('✨ Database seeding complete! Ready for development & production.');
+}
+
+seed()
+  .catch((e) => {
+    console.error('Seeding error:', e);
+    process.exit(1);
+  });
