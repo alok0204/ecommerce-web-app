@@ -41,11 +41,11 @@ export function Footer() {
                 </a>
                 <span>•</span>
                 <a
-                  href="mailto:alokvishwas786@gmail.com"
+                  href="mailto:contact@nexora.com"
                   className="flex items-center gap-1 hover:text-white transition-colors"
                 >
                   <Mail className="w-3.5 h-3.5" />
-                  <span>Contact</span>
+                  <span>Support (Demo)</span>
                 </a>
               </div>
             </div>

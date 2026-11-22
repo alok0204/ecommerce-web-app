@@ -32,13 +32,13 @@ export function CheckoutPage() {
 
   // Form states
   const [formData, setFormData] = useState({
-    customerName: user?.name || '',
-    customerEmail: user?.email || '',
+    customerName: user?.name || 'Alex Morgan',
+    customerEmail: user?.email || 'alex.demo@nexora.com',
     customerPhone: user?.phone || '+91 98765 43210',
-    shippingAddress: user?.address || 'GL Bajaj Campus, Knowledge Park III',
-    city: user?.city || 'Greater Noida',
-    state: user?.state || 'Uttar Pradesh',
-    postalCode: user?.postalCode || '201306',
+    shippingAddress: user?.address || '42 Skyline Boulevard, Suite 10',
+    city: user?.city || 'New Delhi',
+    state: user?.state || 'Delhi',
+    postalCode: user?.postalCode || '110001',
     country: 'India',
     shippingMethod: 'standard', // 'standard' or 'express'
     paymentMethod: 'DEMO_CARD', // 'DEMO_CARD', 'DEMO_UPI', 'DEMO_COD'
@@ -201,7 +201,7 @@ export function CheckoutPage() {
                     value={formData.customerName}
                     onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-none focus:border-brand-500"
-                    placeholder="Alok Kumar Vishwas"
+                    placeholder="Alex Morgan"
                   />
                 </div>
               </div>
@@ -216,7 +216,7 @@ export function CheckoutPage() {
                     value={formData.customerEmail}
                     onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-none focus:border-brand-500"
-                    placeholder="alokvishwas786@gmail.com"
+                    placeholder="alex.demo@nexora.com"
                   />
                 </div>
               </div>

@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
       name: 'Alok Kumar Vishwas',
       role: 'Full-Stack Developer',
       institution: 'GL Bajaj Institute of Technology & Management, Greater Noida',
-      email: 'alokvishwas786@gmail.com',
+      email: 'contact@nexora.com',
       github: 'https://github.com/alok0204',
       internship: 'Thiranex Task 3'
     },

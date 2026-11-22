@@ -2,7 +2,7 @@
   "name": "nexora-ecommerce",
   "version": "1.0.0",
   "description": "NEXORA — Full-Stack E-Commerce Web Application built with React, Vite, Tailwind CSS, Node.js, Express, PostgreSQL & Prisma ORM",
-  "author": "Alok Kumar Vishwas <alokvishwas786@gmail.com> (https://github.com/alok0204)",
+  "author": "Alok Kumar Vishwas (https://github.com/alok0204)",
   "license": "MIT",
   "private": true,
   "workspaces": [

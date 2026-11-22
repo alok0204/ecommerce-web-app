@@ -16,7 +16,7 @@
 - **Developer:** Alok Kumar Vishwas
 - **Academic Profile:** B.Tech (2nd Year), Computer Science & Engineering (CSE)
 - **Institution:** GL Bajaj Institute of Technology & Management, Greater Noida
-- **Email:** [alokvishwas786@gmail.com](mailto:alokvishwas786@gmail.com)
+- **Email:** [contact@nexora.com](mailto:contact@nexora.com)
 - **GitHub Profile:** [@alok0204](https://github.com/alok0204)
 - **Internship Organization:** Thiranex
 - **Assigned Task:** Task 3 — Full-Stack E-Commerce Web Application
